@@ -109,6 +109,55 @@ public class Prueba {
         } 
         
         
+        ArrayList<Furgoneta> listaFurgonetas = new ArrayList<>();
+        ArrayList<Turismo> listaTurismos = new ArrayList<>();
+        ArrayList<Deportivo> listaDeportivos = new ArrayList<>();
         
+        for(Vehiculo i : listaVehiculos){
+            if(i instanceof Furgoneta){
+                listaFurgonetas.add((Furgoneta) i);
+            }
+            
+            if(i instanceof Turismo){
+                listaTurismos.add((Turismo) i);
+            }
+            
+            if(i instanceof Deportivo){
+                listaDeportivos.add((Deportivo) i);
+            }
+        }
+        
+        try (BufferedWriter flujo = new BufferedWriter(new FileWriter("Furgoneta.txt"))){		
+            for (Furgoneta i : listaFurgonetas) {
+                flujo.write(i.toString());
+                flujo.newLine();
+            }
+            // Metodo fluh() guarda cambios en disco 
+            flujo.flush();	
+        } catch (IOException e) {
+                System.out.println(e.getMessage());
+        }
+        
+        try (BufferedWriter flujo = new BufferedWriter(new FileWriter("Turismo.txt"))){		
+            for (Turismo i : listaTurismos) {
+                flujo.write(i.toString());
+                flujo.newLine();
+            }
+            // Metodo fluh() guarda cambios en disco 
+            flujo.flush();	
+        } catch (IOException e) {
+                System.out.println(e.getMessage());
+        }
+        
+        try (BufferedWriter flujo = new BufferedWriter(new FileWriter("Deportivo.txt"))){		
+            for (Deportivo i : listaDeportivos) {
+                flujo.write(i.toString());
+                flujo.newLine();
+            }
+            // Metodo fluh() guarda cambios en disco 
+            flujo.flush();	
+        } catch (IOException e) {
+                System.out.println(e.getMessage());
+        }
     }
 }
