@@ -27,6 +27,14 @@ public abstract class Vehiculo {
         return bastidor + ":" + matricula + ":" + marca + ":" + modelo + ":" + color + ":" + tarifa + ":" + disponible ;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.bastidor);
+        hash = 53 * hash + Objects.hashCode(this.matricula);
+        return hash;
+    }
+
 
     @Override
     public boolean equals(Object obj) {

@@ -6,11 +6,11 @@
 package relacionEjercicios.ejercicio4;
 
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -158,6 +158,123 @@ public class Prueba {
             flujo.flush();	
         } catch (IOException e) {
                 System.out.println(e.getMessage());
+        }
+        
+        
+     
+        File directorio = new File("./copias");
+        if(!directorio.exists()){
+           directorio.mkdir();
+        }
+        
+ 
+        Path deportivo  = Paths.get("Deportivo.txt");
+        Path turismo = Paths.get("Turismo.txt");
+        Path furgoneta = Paths.get("Furgoneta.txt");
+        
+        Path dDeportivo = Paths.get("./copias/Deportivo.txt");
+        Path dTurismo = Paths.get("./copias/Turismo.txt");
+        Path dFurgoneta = Paths.get("./copias/Furgoneta.txt");
+        try{  
+            Files.copy(deportivo, dDeportivo,StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(turismo, dTurismo,StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(furgoneta, dFurgoneta,StandardCopyOption.REPLACE_EXISTING);
+        }catch(IOException e) {     
+            System.out.println("Problema copiando el archivo.");
+            System.out.println(e.toString());
+        }
+        
+        ArrayList<Vehiculo> cVehiculos = new ArrayList<>();
+        
+        idfichero = "./copias/Deportivo.txt";
+        try (Scanner datosFichero = new Scanner(new FileReader(idfichero))){
+            while (datosFichero.hasNextLine()) {
+                linea = datosFichero.nextLine();
+
+                tokens = linea.split(":");              
+                
+                bastidor = Long.parseLong(tokens[0].substring(0,1));
+                tarifa = Double.parseDouble(tokens[5]);
+                disponible = Boolean.parseBoolean(tokens[6]);
+                
+                cilindrada = Integer.parseInt(tokens[7]);
+                cVehiculos.add(new Deportivo(cilindrada, bastidor, tokens[1], tokens[2], tokens[3], tokens[4], tarifa, disponible));             
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } 
+        
+        idfichero = "./copias/Furgoneta.txt";
+        try (Scanner datosFichero = new Scanner(new FileReader(idfichero))){
+            while (datosFichero.hasNextLine()) {
+                linea = datosFichero.nextLine();
+
+                tokens = linea.split(":");              
+                
+                bastidor = Long.parseLong(tokens[0].substring(0,1));
+                tarifa = Double.parseDouble(tokens[5]);
+                disponible = Boolean.parseBoolean(tokens[6]);
+
+                carga = Integer.parseInt(tokens[7]);
+                volumen = Integer.parseInt(tokens[8]);
+                cVehiculos.add(new Furgoneta(carga, volumen, bastidor, tokens[1], tokens[2], tokens[3], tokens[4], tarifa, disponible));            
+            }
+            
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } 
+        
+        idfichero = "./copias/Turismo.txt";
+        try (Scanner datosFichero = new Scanner(new FileReader(idfichero))){
+            while (datosFichero.hasNextLine()) {
+                linea = datosFichero.nextLine();
+
+                tokens = linea.split(":");              
+                
+                bastidor = Long.parseLong(tokens[0].substring(0,1));
+                tarifa = Double.parseDouble(tokens[5]);
+                disponible = Boolean.parseBoolean(tokens[6]);
+                
+                numeroPuertas = Integer.parseInt(tokens[7]);
+                cVehiculos.add(new Turismo(numeroPuertas, bastidor, tokens[1], tokens[2], tokens[3], tokens[4], tarifa, disponible));                    
+            }
+            
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } 
+        cVehiculos.get(0).setBastidor(2L);
+        for(Vehiculo i : cVehiculos){
+            System.out.println(i);
+        }
+        System.out.println("");
+        
+        cVehiculos.sort(Comparator.comparing((v) -> v.getBastidor()));
+        
+        for(Vehiculo i : cVehiculos){
+            System.out.println(i);
+        }
+        
+        Path vehiculos = Paths.get("vehiculos.txt");
+        try{  
+            Files.delete(deportivo);
+            Files.delete(turismo);
+            Files.delete(furgoneta);
+            Files.delete(vehiculos);
+        }catch(IOException e) {     
+            System.out.println("Problema borrando el archivo.");
+            System.out.println(e.toString());
+        }
+        
+        
+        System.out.println("");
+        System.out.println("Contenido del directorio:");
+        File f = new File(".");
+        if (f.exists()){
+            File[] ficheros = f.listFiles();
+            for (File file2 : ficheros) {
+                System.out.println(file2.getName());
+            }
+        }else {    System.out.println("El directorio a listar no existe");
         }
     }
 }
