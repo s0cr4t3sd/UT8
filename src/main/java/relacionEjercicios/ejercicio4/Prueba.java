@@ -23,6 +23,8 @@ import java.util.Scanner;
 public class Prueba {
     public static void main(String[] args) {
         ArrayList<Vehiculo> lista = new ArrayList<>();
+        
+        Ficheros ficheros = new Ficheros();
 
         
         for (int i = 0; i < 10; i++) {
@@ -161,28 +163,13 @@ public class Prueba {
         }
         
         
-     
-        File directorio = new File("./copias");
-        if(!directorio.exists()){
-           directorio.mkdir();
-        }
+        /*Ejercicio 10*/
+        ficheros.crearDirectorio("./copias");
         
- 
-        Path deportivo  = Paths.get("Deportivo.txt");
-        Path turismo = Paths.get("Turismo.txt");
-        Path furgoneta = Paths.get("Furgoneta.txt");
+        ficheros.copiarFichero(Paths.get("Deportivo.txt"), Paths.get("./copias/Deportivo.txt"));
+        ficheros.copiarFichero(Paths.get("Turismo.txt"), Paths.get("./copias/Turismo.txt"));
+        ficheros.copiarFichero(Paths.get("Furgoneta.txt"), Paths.get("./copias/Furgoneta.txt"));
         
-        Path dDeportivo = Paths.get("./copias/Deportivo.txt");
-        Path dTurismo = Paths.get("./copias/Turismo.txt");
-        Path dFurgoneta = Paths.get("./copias/Furgoneta.txt");
-        try{  
-            Files.copy(deportivo, dDeportivo,StandardCopyOption.REPLACE_EXISTING);
-            Files.copy(turismo, dTurismo,StandardCopyOption.REPLACE_EXISTING);
-            Files.copy(furgoneta, dFurgoneta,StandardCopyOption.REPLACE_EXISTING);
-        }catch(IOException e) {     
-            System.out.println("Problema copiando el archivo.");
-            System.out.println(e.toString());
-        }
         
         ArrayList<Vehiculo> cVehiculos = new ArrayList<>();
         
@@ -254,24 +241,18 @@ public class Prueba {
             System.out.println(i);
         }
         
-        Path vehiculos = Paths.get("vehiculos.txt");
-        try{  
-            Files.delete(deportivo);
-            Files.delete(turismo);
-            Files.delete(furgoneta);
-            Files.delete(vehiculos);
-        }catch(IOException e) {     
-            System.out.println("Problema borrando el archivo.");
-            System.out.println(e.toString());
-        }
-        
+        ficheros.eliminarFichero(Paths.get("Deportivo.txt"));
+        ficheros.eliminarFichero(Paths.get("Turismo.txt"));
+        ficheros.eliminarFichero(Paths.get("Furgoneta.txt"));
+        ficheros.eliminarFichero(Paths.get("vehiculos.txt"));
+       
         
         System.out.println("");
         System.out.println("Contenido del directorio:");
         File f = new File(".");
         if (f.exists()){
-            File[] ficheros = f.listFiles();
-            for (File file2 : ficheros) {
+            File[] fic = f.listFiles();
+            for (File file2 : fic) {
                 System.out.println(file2.getName());
             }
         }else {    System.out.println("El directorio a listar no existe");
